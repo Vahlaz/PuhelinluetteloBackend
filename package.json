@@ -11,10 +11,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "morgan": "^1.10.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "modules": "^0.4.0"
+    "modules": "^0.4.0",
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
     "morgan": "^1.10.0",
