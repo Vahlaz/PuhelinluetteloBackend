@@ -1,6 +1,6 @@
 const express = require('express')
 const { response } = require('express')
-var morgan = require('morgan')
+const morgan = require('morgan')
 morgan.token('body', function (req, res) { return JSON.stringify(req.body) })
 
 const app =  express()
