@@ -87,7 +87,7 @@ app.post('/api/persons',(req,res)=>{
     res.status(400).send({error : 'No name or number'})
   }else {
     persons = persons.concat(person)
-    res.status(204).end()
+    res.send.json(person).status(204).end()
   }
 })
 
