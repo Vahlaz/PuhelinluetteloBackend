@@ -77,6 +77,7 @@ Person.findByIdAndRemove(request.params.id)
 
 app.post('/api/persons',(req,res)=>{
   const body = req.body
+  console.log(body)
   const person = new Person ({
     name: body.name,
     number: body.number,
