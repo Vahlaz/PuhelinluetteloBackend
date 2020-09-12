@@ -16,6 +16,7 @@
     "express": "^4.17.1",
     "modules": "^0.4.0",
     "mongoose": "^5.10.3",
+    "mongoose-unique-validator": "^2.0.3",
     "morgan": "^1.10.0"
   },
   "devDependencies": {

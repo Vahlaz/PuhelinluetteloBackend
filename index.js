@@ -1,34 +1,35 @@
 const express = require('express')
 const app =  express()
-const { response } = require('express')
+const {response} = require('express')
 const morgan = require('morgan')
 require('dotenv').config()
 const Person = require('./models/person')
 const mongoose = require('mongoose')
 
-
 const cors = require('cors')
-
 app.use(cors())
 
 app.use(morgan(':method :url :status - :response-time ms :body' ))
-app.use(express.static('build'))
 app.use(express.json())
-
+app.use(express.static('build'))
 
 
 morgan.token('body', function (req, res) { return JSON.stringify(req.body) })
-const errorHandler = (error, request, response, next) => {
-  console.log('AN ERROR HAPPENED')
-  console.error(error.name)
 
-  if(error.name==='CastError') {
-    return response.status(400).send({error:'malformatted id'})
+
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message)
+
+  if (error.name === 'CastError' && error.kind == 'ObjectId') {
+    return response.status(400).send({ error: 'malformatted id' })
+  } else if (error.name === 'ValidationError') {
+    return response.status(400).json({ error: error.message })
   }
+
   next(error)
 }
 
-
+app.use(errorHandler)
 
 
 
@@ -43,8 +44,6 @@ app.get('/api/persons',(req,res) => {
     res.json(people)
       })
 })
-
-app.use(errorHandler)
 
 app.get('/api/info',(req,res)=> {
     const newDate = new Date()
@@ -86,10 +85,14 @@ app.post('/api/persons',(req,res)=>{
   if(body === undefined){
     return res.status(400).json({error:"content missing"})
   }else{
-    person.save().then(savedPerson=>{
+    person.save()
+    .then(savedPerson=>{
       res.json(savedPerson)
     })
-    .catch((error) => res.status(400))
+    .catch((error) => {
+      console.log(error.message)
+      res.status(400).json({error: error.message})
+    })
   }
 })
 
@@ -105,6 +108,9 @@ app.put('/api/persons/:id', (req,res)=>{
   })
   .catch(error=>next(error))
 })
+
+
+
 
 const PORT = process.env.PORT
 app.listen(PORT, () =>
