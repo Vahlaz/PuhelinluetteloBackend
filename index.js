@@ -36,43 +36,42 @@ app.use(errorHandler)
 console.log('hello world')
 
 app.get('/', (req, res)=> {
-    res.send('<h1> Hello World </h1>')
+  res.send('<h1> Hello World </h1>')
 })
 
 app.get('/api/persons',(req,res) => {
-    Person.find({}).then(people => {
+  Person.find({}).then(people => {
     res.json(people)
-      })
+  })
 })
 
 app.get('/api/info',(req,res)=> {
-    const newDate = new Date()
+  const newDate = new Date()
 
-    Person.find({}).then(people => {
-      let persons = people.length
-      res.send(`Phonebook has info for ${persons} people </br> ${newDate}`)
-    })
+  Person.find({}).then(people => {
+    let persons = people.length
+    res.send(`Phonebook has info for ${persons} people </br> ${newDate}`)
+  })
     .catch(error => next(error))
 })
 
 
 app.get('/api/persons/:id', (request, response, next) => {
-  Person.findById(request.params.id)
-  .then( person =>{
+  Person.findById(request.params.id).then( person =>{
     if(person){response.json(person)
     }else{
-    response.status(404).end()
-  }
+      response.status(404).end()
+    }
   })
-  .catch(error => next(error))
+    .catch(error => next(error))
 })
 
 app.delete('/api/persons/:id', (request, response) =>{
-Person.findByIdAndRemove(request.params.id)
-.then(result => {
-  response.status(204).end()
-})
-.catch(error=>next(error))
+  Person.findByIdAndRemove(request.params.id)
+    .then(
+      response.status(204).end()
+    )
+    .catch(error=>next(error))
 })
 
 app.post('/api/persons',(req,res)=>{
@@ -84,16 +83,16 @@ app.post('/api/persons',(req,res)=>{
   })
 
   if(body === undefined){
-    return res.status(400).json({error:"content missing"})
+    return res.status(400).json({error:'content missing'})
   }else{
     person.save()
-    .then(savedPerson=>{
-      res.json(savedPerson)
-    })
-    .catch((error) => {
-      console.log(error.message)
-      res.status(400).json({error: error.message})
-    })
+      .then(savedPerson=>{
+        res.json(savedPerson)
+      })
+      .catch((error) => {
+        console.log(error.message)
+        res.status(400).json({error: error.message})
+      })
   }
 })
 
@@ -104,10 +103,10 @@ app.put('/api/persons/:id', (req,res)=>{
     number: body.number,
   }
   Person.findByIdAndUpdate(req.params.id, person,{new:true})
-  .then(updatedPerson => {
-    res.json(updatedPerson)
-  })
-  .catch(error=>next(error))
+    .then(updatedPerson => {
+      res.json(updatedPerson)
+    })
+    .catch(error=>next(error))
 })
 
 
@@ -115,6 +114,6 @@ app.put('/api/persons/:id', (req,res)=>{
 
 const PORT = process.env.PORT
 app.listen(PORT, () =>
-console.log(`Server running on port ${PORT}`)
+  console.log(`Server running on port ${PORT}`)
 )
 

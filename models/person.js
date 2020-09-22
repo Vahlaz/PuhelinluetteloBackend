@@ -6,10 +6,10 @@ console.log(process.argv + 'bruh')
 const uri = process.env.MONGODB_URI
 
 mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true})
-.then(result => console.log('connected'))
-.catch((error) => {
+  .then(result => console.log('connected'))
+  .catch((error) => {
     console.log('error connecting : ' , error.message)
-})
+  })
 
 const personSchema = new mongoose.Schema({
   name: {type: String, minlength: 3, required: true, unique: true},
